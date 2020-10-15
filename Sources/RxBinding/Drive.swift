@@ -29,51 +29,49 @@ import RxCocoa
 infix operator ~> : DefaultPrecedence
 
 // Drive the observer, the relay or the binder.
-extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
-    
-    public static func ~> <O>(observable: Self, observer: O) -> Disposable where O : ObserverType, Element == O.Element {
-        return observable.drive(observer)
-    }
-    
-    public static func ~> <O>(observable: Self, observer: O) -> Disposable where O : ObserverType, O.Element == Element? {
-        return observable.drive(observer)
+public extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+
+    static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, Element == O.Element {
+        observable.drive(observer)
     }
 
-    public static func ~> (observable: Self, relay: BehaviorRelay<Self.Element>) -> Disposable {
-        return observable.drive(relay)
+    static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, O.Element == Element? {
+        observable.drive(observer)
     }
 
-    public static func ~> (observable: Self, relay: BehaviorRelay<Self.Element?>) -> Disposable {
-        return observable.drive(relay)
+    static func ~> (observable: Self, relay: BehaviorRelay<Self.Element>) -> Disposable {
+        observable.drive(relay)
     }
 
-    public static func ~> <R>(observable: Self, transformation: (Observable<Self.Element>) -> R) -> R {
-        return observable.drive(transformation)
+    static func ~> (observable: Self, relay: BehaviorRelay<Self.Element?>) -> Disposable {
+        observable.drive(relay)
     }
 
+    static func ~> <R>(observable: Self, transformation: (Observable<Self.Element>) -> R) -> R {
+        observable.drive(transformation)
+    }
 }
 
 // Drive the array of observer, relay or binder.
-extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
-    
-    public static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O : ObserverType, Element == O.Element {
-        return observers.map { observable.drive($0) }
+public extension SharedSequenceConvertibleType where SharingStrategy == DriverSharingStrategy {
+
+    static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, Element == O.Element {
+        observers.map { observable.drive($0) }
     }
-    
-    public static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O : ObserverType, O.Element == Element? {
-        return observers.map { observable.drive($0) }
+
+    static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, O.Element == Element? {
+        observers.map { observable.drive($0) }
     }
-    
-    public static func ~> (observable: Self, relays: [BehaviorRelay<Element>]) -> [Disposable] {
-        return relays.map { observable.drive($0) }
+
+    static func ~> (observable: Self, relays: [BehaviorRelay<Element>]) -> [Disposable] {
+        relays.map { observable.drive($0) }
     }
-    
-    public static func ~> (observable: Self, relays: [BehaviorRelay<Element?>]) -> [Disposable] {
-        return relays.map { observable.drive($0) }
+
+    static func ~> (observable: Self, relays: [BehaviorRelay<Element?>]) -> [Disposable] {
+        relays.map { observable.drive($0) }
     }
-    
-    public static func ~> <R>(observable: Self, transformations: [(Observable<Element>) -> R]) -> [R] {
-        return transformations.map { observable.drive($0) }
+
+    static func ~> <R>(observable: Self, transformations: [(Observable<Element>) -> R]) -> [R] {
+        transformations.map { observable.drive($0) }
     }
-    
 }

@@ -29,59 +29,57 @@ import RxCocoa
 infix operator ~> : DefaultPrecedence
 
 // Emit the observer, the relay or the binder.
-extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
-    
-    public static func ~> <O>(observable: Self, observer: O) -> Disposable where O : ObserverType, Self.Element == O.Element {
-        return observable.emit(to: observer)
-    }
-    
-    public static func ~> <O>(observable: Self, observer: O) -> Disposable where O : ObserverType, O.Element == Self.Element? {
-        return observable.emit(to: observer)
-    }
-    
-    public static func ~> (observable: Self, relay: PublishRelay<Self.Element>) -> Disposable {
-        return observable.emit(to: relay)
-    }
-    
-    public static func ~> (observable: Self, relay: PublishRelay<Self.Element?>) -> Disposable {
-        return observable.emit(to: relay)
-    }
-    
-    public static func ~> (observable: Self, relay: BehaviorRelay<Self.Element>) -> Disposable {
-        return observable.emit(to: relay)
-    }
-    
-    public static func ~> (observable: Self, relay: BehaviorRelay<Self.Element?>) -> Disposable {
-        return observable.emit(to: relay)
+public extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
+
+    static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, Self.Element == O.Element {
+        observable.emit(to: observer)
     }
 
+    static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, O.Element == Self.Element? {
+        observable.emit(to: observer)
+    }
+
+    static func ~> (observable: Self, relay: PublishRelay<Self.Element>) -> Disposable {
+        observable.emit(to: relay)
+    }
+
+    static func ~> (observable: Self, relay: PublishRelay<Self.Element?>) -> Disposable {
+        observable.emit(to: relay)
+    }
+
+    static func ~> (observable: Self, relay: BehaviorRelay<Self.Element>) -> Disposable {
+        observable.emit(to: relay)
+    }
+
+    static func ~> (observable: Self, relay: BehaviorRelay<Self.Element?>) -> Disposable {
+        observable.emit(to: relay)
+    }
 }
 
 // Emit the array of observer, relay or binder.
-extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
+public extension SharedSequenceConvertibleType where SharingStrategy == SignalSharingStrategy {
 
-    public static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O : ObserverType, Self.Element == O.Element {
-        return observers.map { observable.emit(to: $0) }
-    }
-
-    public static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O : ObserverType, O.Element == Self.Element? {
-        return observers.map { observable.emit(to: $0) }
-    }
-    
-    public static func ~> (observable: Self, relays: [PublishRelay<Self.Element>]) -> [Disposable] {
-        return relays.map { observable.emit(to: $0) }
-    }
-    
-    public static func ~> (observable: Self, relays: [PublishRelay<Self.Element?>]) -> [Disposable] {
-        return relays.map { observable.emit(to: $0) }
+    static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, Self.Element == O.Element {
+        observers.map { observable.emit(to: $0) }
     }
 
-    public static func ~> (observable: Self, relays: [BehaviorRelay<Self.Element>]) -> [Disposable] {
-        return relays.map { observable.emit(to: $0) }
+    static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, O.Element == Self.Element? {
+        observers.map { observable.emit(to: $0) }
     }
 
-    public static func ~> (observable: Self, relays: [BehaviorRelay<Self.Element?>]) -> [Disposable] {
-        return relays.map { observable.emit(to: $0) }
+    static func ~> (observable: Self, relays: [PublishRelay<Self.Element>]) -> [Disposable] {
+        relays.map { observable.emit(to: $0) }
     }
 
+    static func ~> (observable: Self, relays: [PublishRelay<Self.Element?>]) -> [Disposable] {
+        relays.map { observable.emit(to: $0) }
+    }
+
+    static func ~> (observable: Self, relays: [BehaviorRelay<Self.Element>]) -> [Disposable] {
+        relays.map { observable.emit(to: $0) }
+    }
+
+    static func ~> (observable: Self, relays: [BehaviorRelay<Self.Element?>]) -> [Disposable] {
+        relays.map { observable.emit(to: $0) }
+    }
 }

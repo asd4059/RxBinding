@@ -30,19 +30,19 @@ import RxCocoa
 infix operator <~> : DefaultPrecedence
 
 public func <~> <T>(relay: BehaviorRelay<T>, property: ControlProperty<T>) -> Disposable {
-    return relay.twoWayBind(to: property)
+    relay.twoWayBind(to: property)
 }
 
 extension BehaviorRelay where Element == String {
-    
+
     func twoWaybind<Base>(to textInput: TextInput<Base>) -> Disposable {
         let bindToUIDisposable = self.bind(to: textInput.text)
-        
+
         let bindToRelay = textInput.text.subscribe(onNext: { [weak base = textInput.base] n in
             guard let base = base else {
                 return
             }
-            
+
             let nonMarkedTextValue = self.nonMarkedText(base)
             
             /**
@@ -58,38 +58,37 @@ extension BehaviorRelay where Element == String {
             if let nonMarkedTextValue = nonMarkedTextValue, nonMarkedTextValue != self.value {
                 self.accept(nonMarkedTextValue)
             }
-            }, onCompleted:  {
+            }, onCompleted: {
                 bindToUIDisposable.dispose()
         })
-        
+
         return Disposables.create(bindToUIDisposable, bindToRelay)
     }
-    
+
     private func nonMarkedText(_ textInput: UITextInput) -> String? {
         let start = textInput.beginningOfDocument
         let end = textInput.endOfDocument
-        
+
         guard let rangeAll = textInput.textRange(from: start, to: end),
             let text = textInput.text(in: rangeAll) else {
                 return nil
         }
-        
+
         guard let markedTextRange = textInput.markedTextRange else {
             return text
         }
-        
+
         guard let startRange = textInput.textRange(from: start, to: markedTextRange.start),
             let endRange = textInput.textRange(from: markedTextRange.end, to: end) else {
                 return text
         }
-        
+
         return (textInput.text(in: startRange) ?? "") + (textInput.text(in: endRange) ?? "")
     }
-    
 }
 
 extension BehaviorRelay {
-    
+
     func twoWayBind(to property: ControlProperty<Element>) -> Disposable {
         if Element.self == String.self {
             #if DEBUG
@@ -99,14 +98,13 @@ extension BehaviorRelay {
             )
             #endif
         }
-        
+
         let bindToUIDisposable = self.bind(to: property)
         let bindToRelay = property.subscribe(onNext: { n in
             self.accept(n)
-        }, onCompleted:  {
+        }, onCompleted: {
             bindToUIDisposable.dispose()
         })
         return Disposables.create(bindToUIDisposable, bindToRelay)
     }
-    
 }

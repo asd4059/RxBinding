@@ -27,25 +27,25 @@ import RxSwift
 
 precedencegroup DisposePrecedence {
     associativity: left
-    
+
     lowerThan: DefaultPrecedence
 }
 
 infix operator ~ : DisposePrecedence
 
-extension DisposeBag {
-    
-    public static func ~ (disposable: Disposable, disposeBag: DisposeBag) {
+public extension DisposeBag {
+
+    static func ~ (disposable: Disposable, disposeBag: DisposeBag) {
         disposable.disposed(by: disposeBag)
     }
-    
+
     @discardableResult
-    public static func ~ (disposeBag: DisposeBag, disposable: Disposable) -> DisposeBag {
+    static func ~ (disposeBag: DisposeBag, disposable: Disposable) -> DisposeBag {
         disposable.disposed(by: disposeBag)
         return disposeBag
     }
-    
-    public static func ~ (disposeBag: DisposeBag, disposables: [Any]) {
+
+    static func ~ (disposeBag: DisposeBag, disposables: [Any]) {
         disposables.map { obj -> [Disposable] in
             switch obj.self {
             case is Disposable:
@@ -60,33 +60,31 @@ extension DisposeBag {
             $0.disposed(by: disposeBag)
         }
     }
-    
-    public static func ~ (disposables: [Any], disposeBag: DisposeBag) {
+
+    static func ~ (disposables: [Any], disposeBag: DisposeBag) {
         disposeBag ~ disposables
     }
-    
 }
 
-extension Array where Element == Disposable {
-    
-    public static func ~ (disposables: Array, disposeBag: DisposeBag) {
+public extension Array where Element == Disposable {
+
+    static func ~ (disposables: Array, disposeBag: DisposeBag) {
         disposables.forEach { $0.disposed(by: disposeBag) }
     }
-    
-    public static func ~ (disposeBag: DisposeBag, disposables: Array) {
+
+    static func ~ (disposeBag: DisposeBag, disposables: Array) {
         disposables.forEach { $0.disposed(by: disposeBag) }
     }
-    
-    public static func ~ (disposables: Array, disposable: Disposable) -> [Disposable] {
-        return disposables + [disposable]
+
+    static func ~ (disposables: Array, disposable: Disposable) -> [Disposable] {
+        disposables + [disposable]
     }
-    
-    public static func ~ (disposables1: Array, disposables2: Array) -> [Disposable] {
-        return disposables1 + disposables2
+
+    static func ~ (disposables1: Array, disposables2: Array) -> [Disposable] {
+        disposables1 + disposables2
     }
-    
 }
 
 public func ~ (disposable1: Disposable, disposable2: Disposable) -> [Disposable] {
-    return Array(arrayLiteral: disposable1, disposable2)
+    Array(arrayLiteral: disposable1, disposable2)
 }

@@ -29,73 +29,69 @@ import RxCocoa
 infix operator ~> : DefaultPrecedence
 
 // Bind to the observer, the relay or the binder.
-extension ObservableType {
-    
-    public static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, O.Element == Element {
-        return observable.bind(to: observer)
+public extension ObservableType {
+
+    static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, O.Element == Element {
+        observable.bind(to: observer)
     }
-    
-    public static func ~> <O>(observable: Self, observer: O) -> Disposable where O : ObserverType, O.Element == Element?  {
-        return observable.bind(to: observer)
+
+    static func ~> <O>(observable: Self, observer: O) -> Disposable where O: ObserverType, O.Element == Element? {
+        observable.bind(to: observer)
     }
-    
-    public static func ~> (observable: Self, relay: PublishRelay<Element>) -> Disposable {
-        return observable.bind(to: relay)
+
+    static func ~> (observable: Self, relay: PublishRelay<Element>) -> Disposable {
+        observable.bind(to: relay)
     }
-    
-    public static func ~> (observable: Self, relay: PublishRelay<Element?>) -> Disposable {
-        return observable.bind(to: relay)
+
+    static func ~> (observable: Self, relay: PublishRelay<Element?>) -> Disposable {
+        observable.bind(to: relay)
     }
-    
-    public static func ~> (observable: Self, relay: BehaviorRelay<Element>) -> Disposable {
-        return observable.bind(to: relay)
+
+    static func ~> (observable: Self, relay: BehaviorRelay<Element>) -> Disposable {
+        observable.bind(to: relay)
     }
-    
-    public static func ~> (observable: Self, relay: BehaviorRelay<Element?>) -> Disposable {
-        return observable.bind(to: relay)
+
+    static func ~> (observable: Self, relay: BehaviorRelay<Element?>) -> Disposable {
+        observable.bind(to: relay)
     }
-    
-    public static func ~> <R>(observable: Self, binder: (Self) -> R) -> R {
-        return observable.bind(to: binder)
+
+    static func ~> <R>(observable: Self, binder: (Self) -> R) -> R {
+        observable.bind(to: binder)
     }
-    
-    public static func ~> (observable: Self, binder: (Self) -> Disposable) -> Disposable {
-        return observable.bind(to: binder)
+
+    static func ~> (observable: Self, binder: (Self) -> Disposable) -> Disposable {
+        observable.bind(to: binder)
     }
-    
 }
 
 // Bind to the array of observer, relay or binder.
-extension ObservableType {
-    
-    public static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, O.Element == Element {
-        return observers.map { observable.bind(to: $0) }
+public extension ObservableType {
+
+    static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, O.Element == Element {
+        observers.map { observable.bind(to: $0) }
     }
-    
-    public static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O : ObserverType, O.Element == Element?  {
-        return observers.map { observable.bind(to: $0) }
+
+    static func ~> <O>(observable: Self, observers: [O]) -> [Disposable] where O: ObserverType, O.Element == Element? {
+        observers.map { observable.bind(to: $0) }
     }
-    
-    public static func ~> (observable: Self, relays: [PublishRelay<Element>]) -> [Disposable] {
-        return relays.map { observable.bind(to: $0) }
+
+    static func ~> (observable: Self, relays: [PublishRelay<Element>]) -> [Disposable] {
+        relays.map { observable.bind(to: $0) }
     }
-    
-    public static func ~> (observable: Self, relays: [PublishRelay<Element?>]) -> [Disposable] {
-        return relays.map { observable.bind(to: $0) }
+
+    static func ~> (observable: Self, relays: [PublishRelay<Element?>]) -> [Disposable] {
+        relays.map { observable.bind(to: $0) }
     }
-    
-    public static func ~> (observable: Self, relays: [BehaviorRelay<Element>]) -> [Disposable] {
-        return relays.map { observable.bind(to: $0) }
+
+    static func ~> (observable: Self, relays: [BehaviorRelay<Element>]) -> [Disposable] {
+        relays.map { observable.bind(to: $0) }
     }
-    
-    public static func ~> (observable: Self, relays: [BehaviorRelay<Element?>]) -> [Disposable] {
-        return relays.map { observable.bind(to: $0) }
+
+    static func ~> (observable: Self, relays: [BehaviorRelay<Element?>]) -> [Disposable] {
+        relays.map { observable.bind(to: $0) }
     }
-    
-    public static func ~> <R>(observable: Self, binders: [(Self) -> R]) -> [R] {
-        return binders.map { observable.bind(to: $0) }
+
+    static func ~> <R>(observable: Self, binders: [(Self) -> R]) -> [R] {
+        binders.map { observable.bind(to: $0) }
     }
-    
 }
-
-
